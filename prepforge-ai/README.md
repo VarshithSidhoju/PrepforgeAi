@@ -55,6 +55,51 @@ Express Backend
          └── Gemini API
 ```
 
+# PrepForge AI
+
+PrepForge AI is an AI-powered interview preparation platform designed for software engineers preparing for top-tier companies like Google, Amazon, Microsoft, Meta, and others.
+
+## Features
+
+- DSA Progress Tracker
+- Job Application Tracker
+- AI Resume Analyzer
+- AI Roadmap Generator
+- AI Mock Interviews
+- Company Interview Knowledge Base
+- Personalized Dashboard
+
+## Tech Stack
+
+### Frontend
+- Next.js
+- React
+- Tailwind CSS
+
+### Backend
+- Node.js
+- Express.js
+- TypeScript
+
+### Database
+- PostgreSQL
+- Redis
+- PgVector
+
+### AI
+- Gemini API
+- RAG
+
+### DevOps
+- Docker
+- GitHub Actions
+- Prometheus
+- Grafana
+
+## Project Status
+
+🚧 Currently under development.
+
 ## Infrastructure (local dev)
 
 - 1x PostgreSQL container (all tables: Users, Applications, DSA Problems, Resume, Roadmaps, Interviews, Notifications)
