@@ -1,0 +1,158 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================
+// ENUMS
+// ============================
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ApplicationStatus {
+  APPLIED
+  INTERVIEWING
+  OFFER
+  REJECTED
+  WITHDRAWN
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum DsaStatus {
+  TODO
+  SOLVED
+  REVISIT
+}
+
+enum NotificationType {
+  APPLICATION_UPDATE
+  INTERVIEW_REMINDER
+  RESUME_READY
+  ROADMAP_READY
+  SYSTEM
+}
+
+// ============================
+// MODELS
+// ============================
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  avatar    String?
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  applications  Application[]
+  dsaProblems   DsaProblem[]
+  resumes       Resume[]
+  roadmaps      Roadmap[]
+  interviews    Interview[]
+  notifications Notification[]
+}
+
+model Application {
+  id          String            @id @default(uuid())
+  company     String
+  role        String
+  status      ApplicationStatus @default(APPLIED)
+  location    String?
+  salary      Int?
+  appliedDate DateTime          @default(now())
+  notes       String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model DsaProblem {
+  id           String     @id @default(uuid())
+  title        String
+  difficulty   Difficulty
+  topic        String
+  platform     String
+  status       DsaStatus  @default(TODO)
+  timeTaken    Int?
+  notes        String?
+  revisionDate DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Resume {
+  id          String   @id @default(uuid())
+  fileUrl     String
+  atsScore    Int?
+  suggestions Json?
+  uploadedAt  DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Roadmap {
+  id            String   @id @default(uuid())
+  company       String
+  goal          String
+  generatedPlan Json
+  createdAt     DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Interview {
+  id         String   @id @default(uuid())
+  role       String
+  score      Int?
+  feedback   String?
+  transcript Json?
+  duration   Int?
+  createdAt  DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  type      NotificationType
+  message   String
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
