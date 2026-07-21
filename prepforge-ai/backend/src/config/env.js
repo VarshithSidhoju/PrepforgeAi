@@ -8,6 +8,10 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
   LOG_LEVEL: z.string().default('info'),
+  JWT_ACCESS_SECRET: z.string().min(1),
+  JWT_REFRESH_SECRET: z.string().min(1),
+  JWT_ACCESS_EXPIRY: z.string().default('15m'),
+  JWT_REFRESH_EXPIRY: z.string().default('7d'),
 });
 
 const parsed = envSchema.safeParse(process.env);
@@ -22,4 +26,8 @@ module.exports = {
   nodeEnv: parsed.data.NODE_ENV,
   databaseUrl: parsed.data.DATABASE_URL,
   logLevel: parsed.data.LOG_LEVEL,
+  jwtAccessSecret: parsed.data.JWT_ACCESS_SECRET,
+  jwtRefreshSecret: parsed.data.JWT_REFRESH_SECRET,
+  jwtAccessExpiry: parsed.data.JWT_ACCESS_EXPIRY,
+  jwtRefreshExpiry: parsed.data.JWT_REFRESH_EXPIRY,
 };
