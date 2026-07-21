@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-
+const cookieParser = require('cookie-parser');
 const env = require('./config/env');
 const logger = require('./config/logger');
 const routes = require('./routes');
@@ -11,7 +11,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
+app.use(cookieParser());
 app.use((req, res, next) => {
   logger.info(`${req.method} ${req.originalUrl}`);
   next();
